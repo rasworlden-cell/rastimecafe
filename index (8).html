@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#123a62"><title>Order Online</title>
+<style>
+:root{--navy:#123a62;--blue:#1d4f91;--accent:#f08a24;--bg:#f4f7fb;--card:#fff;--ink:#10233d;--mute:#64748b;--line:#e3e9f1;--ok:#15803d;--bad:#dc2626}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;padding-bottom:90px}
+button{font:inherit;cursor:pointer}
+.hero{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:20px 16px 26px}
+.hero .in{max-width:900px;margin:auto}.hero h1{margin:0;font-size:22px}.hero p{margin:4px 0 0;color:#cfe3fb;font-size:13px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.badge{background:rgba(255,255,255,.14);border-radius:999px;padding:4px 11px;font-size:12px}
+.badge.open{background:#16a34a}.badge.closed{background:#dc2626}
+.wrap{max-width:900px;margin:auto;padding:0 12px}
+.bar{position:sticky;top:0;z-index:20;background:var(--bg);padding:10px 0 6px}
+.search{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;font-size:16px;background:#fff}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:10px 0 4px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:7px 14px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);font-size:13px}
+.chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+h2.cat{margin:18px 2px 8px;font-size:17px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:10px}
+.item{display:flex;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.item img{width:84px;height:84px;object-fit:cover;border-radius:10px;flex:none;background:#eef2f7}
+.item .b{flex:1;min-width:0;display:flex;flex-direction:column}
+.item h3{margin:0;font-size:15px}.item small{color:var(--mute)}
+.opts{display:flex;gap:6px;margin-top:auto;padding-top:8px;flex-wrap:wrap;align-items:center}
+.opt{border:1px solid var(--line);background:#fff;border-radius:10px;padding:6px 10px;font-size:13px;display:flex;gap:6px;align-items:center}
+.opt b{color:var(--navy)}
+.add{background:#fff;border:1.5px solid var(--accent);color:var(--accent);font-weight:700;border-radius:10px;padding:6px 14px}
+.step{display:inline-flex;align-items:center;background:var(--accent);color:#fff;border-radius:10px;overflow:hidden}
+.step button{background:none;border:0;color:#fff;font-size:18px;width:30px;height:30px;font-weight:700}.step span{min-width:22px;text-align:center;font-weight:700}
+.cartbar{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:linear-gradient(0deg,var(--bg) 70%,transparent)}
+.cartbar button{width:100%;max-width:900px;margin:auto;display:flex;justify-content:space-between;align-items:center;background:var(--accent);color:#fff;border:0;border-radius:14px;padding:14px 18px;font-weight:700;font-size:16px;box-shadow:0 8px 24px #f08a2455}
+.sheet{position:fixed;inset:0;z-index:50;background:rgba(10,25,45,.55);display:none;align-items:flex-end;justify-content:center}
+.sheet.on{display:flex}
+.panel{background:var(--bg);width:100%;max-width:640px;max-height:94vh;overflow:auto;border-radius:20px 20px 0 0;padding:16px 16px 24px}
+@media(min-width:700px){.sheet{align-items:center}.panel{border-radius:20px}}
+.panel h3{margin:0 0 10px;font-size:18px;display:flex;justify-content:space-between;align-items:center}
+.x{background:#e8eef6;border:0;border-radius:50%;width:32px;height:32px;font-size:16px}
+.box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:12px}
+.row{display:flex;justify-content:space-between;gap:10px;padding:5px 0;align-items:center}
+.row.t{border-top:1px dashed var(--line);margin-top:6px;padding-top:10px;font-weight:800;font-size:17px}
+label.f{display:block;font-size:12px;color:var(--mute);margin:10px 0 4px}
+input.t,textarea.t{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:16px;background:#fff;font-family:inherit}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg label{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:11px;text-align:center;cursor:pointer;font-weight:600}
+.seg input{display:none}.seg input:checked+span{color:var(--navy)}
+.seg label:has(input:checked){border-color:var(--navy);background:#eaf2fc}
+.pay{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:12px;margin-bottom:8px;cursor:pointer}
+.pay:has(input:checked){border-color:var(--navy);background:#eaf2fc}.pay small{display:block;color:var(--mute)}
+.primary{width:100%;background:var(--navy);color:#fff;border:0;border-radius:12px;padding:14px;font-weight:700;font-size:16px}
+.primary:disabled{opacity:.5}.ghost{width:100%;background:#fff;color:var(--navy);border:1.5px solid var(--navy);border-radius:12px;padding:12px;font-weight:700;margin-top:8px;display:block;text-align:center;text-decoration:none}
+.err{background:#fee2e2;color:#991b1b;border-radius:10px;padding:10px;margin:10px 0;font-size:14px}
+.ok{background:#dcfce7;color:#166534;border-radius:10px;padding:10px;margin:10px 0;font-size:14px}
+.track{display:flex;justify-content:space-between;margin:14px 0 4px;position:relative}
+.track:before{content:"";position:absolute;left:8%;right:8%;top:13px;height:3px;background:var(--line)}
+.tp{position:relative;text-align:center;flex:1;font-size:11px;color:var(--mute)}
+.tp i{display:block;width:28px;height:28px;border-radius:50%;background:#fff;border:3px solid var(--line);margin:0 auto 4px;line-height:20px;font-style:normal;font-size:12px}
+.tp.done i{background:var(--ok);border-color:var(--ok);color:#fff}.tp.done{color:var(--ink);font-weight:600}
+.tp.now i{border-color:var(--accent);background:#fff7ed}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700}
+.pill.g{background:#dcfce7;color:#166534}.pill.y{background:#fef3c7;color:#92400e}.pill.r{background:#fee2e2;color:#991b1b}
+.qr{display:flex;justify-content:center;margin:10px 0}.qr svg,.qr img{width:190px;height:190px}
+.empty{text-align:center;color:var(--mute);padding:40px 10px}
+.link{background:none;border:0;color:var(--blue);text-decoration:underline;padding:0}
+.foot{text-align:center;color:var(--mute);font-size:12px;padding:20px}
+</style>
+<style id="pos-selected-items-horizontal-fix">
+/* Prevent selected item names from collapsing into one-character vertical stacks.
+   Keep the item name readable, with quantity/price/actions arranged horizontally below. */
+#pos #cartItems .pos-cart-line{display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;gap:5px!important;width:100%;box-sizing:border-box;min-width:0;}
+#pos #cartItems .pos-cart-name{display:block!important;flex:0 0 auto!important;width:100%!important;min-width:0!important;max-width:100%!important;white-space:normal!important;overflow-wrap:break-word!important;word-break:normal!important;font-weight:800;line-height:1.25;}
+#pos #cartItems .pos-cart-actions{display:flex!important;flex:0 0 auto!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;flex-wrap:wrap!important;gap:5px!important;width:100%!important;min-width:0;}
+#pos #cartItems .pos-qty-control{display:inline-flex!important;flex:0 0 auto!important;white-space:nowrap!important;}
+#pos #cartItems .pos-cart-price{flex:0 0 auto!important;min-width:55px!important;margin-left:auto!important;text-align:right!important;white-space:nowrap!important;}
+#pos #cartItems .pos-cart-extra{display:flex!important;flex:0 0 auto!important;flex-direction:row!important;flex-wrap:nowrap!important;align-items:center!important;gap:4px!important;}
+#pos #cartItems .pos-cart-extra button{white-space:nowrap!important;font-size:11px!important;}
+@media(max-width:600px){#pos #cartItems .pos-cart-line{flex-direction:column!important;align-items:stretch!important;}#pos #cartItems .pos-cart-name{width:100%!important;font-size:13px!important;}#pos #cartItems .pos-cart-actions{width:100%!important;justify-content:flex-start!important;flex-wrap:wrap!important;}#pos #cartItems .pos-qty-control button{width:25px;height:27px;}#pos #cartItems .pos-cart-price{min-width:45px!important;font-size:12px!important;}}
+</style>
+
+</head><body>
+<header class="hero"><div class="in"><h1 id="shopName">Loading…</h1><p id="shopTag"></p><div class="badges" id="badges"></div></div></header>
+<div class="wrap">
+ <div class="bar"><input class="search" id="q" type="search" placeholder="Search dishes…"><div class="chips" id="chips"></div></div>
+ <div id="menu"><div class="empty">Loading menu…</div></div>
+ <div class="foot"><button class="link" onclick="openOrders()">Track my orders</button></div>
+</div>
+<div class="cartbar" id="cartbar" style="display:none"><button onclick="openCart()"><span id="cbCount"></span><span>View cart · <b id="cbTotal"></b></span></button></div>
+
+<div class="sheet" id="sheetCart" onclick="if(event.target===this)closeSheets()"><div class="panel" id="cartPanel"></div></div>
+<div class="sheet" id="sheetOrder" onclick="if(event.target===this)closeSheets()"><div class="panel" id="orderPanel"></div></div>
+
+<script>window.RAS_ONLINE={"url":"https://itqrmvpuwnajjxxpspmu.supabase.co","anonKey":"sb_publishable_I5_Xt-daCbDrXivGoW5cmQ_NrWLVbTf"};</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const inr=n=>'₹'+(Number(n)||0).toLocaleString('en-IN',{maximumFractionDigits:2});
+const ls={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let sb=null,store=null,cart=ls.get('ras_cart',[]),cat='All',pollTimer=null;
+const cfg=window.RAS_ONLINE||{};
+
+async function rpc(name,args){const {data,error}=await sb.rpc(name,args||{});if(error)throw new Error(error.message||'Something went wrong');return data}
+async function init(){
+  if(!cfg.url||!cfg.anonKey||!window.supabase){$('shopName').textContent='Online ordering';$('menu').innerHTML='<div class="empty">Online ordering is not set up yet.</div>';return}
+  sb=window.supabase.createClient(cfg.url,cfg.anonKey);
+  try{store=await rpc('online_get_store')}catch(e){$('menu').innerHTML=`<div class="empty">Could not load the menu: ${esc(e.message||'Connection error')}. Check Supabase connection and RPC permissions, then refresh.</div>`;return}
+  if(!store||!store.menu){$('shopName').textContent='Online ordering';$('menu').innerHTML='<div class="empty">Menu is not published yet.</div>';return}
+  const sh=store.shop||{};document.title=(sh.name||'Order')+' — Order Online';
+  $('shopName').textContent=sh.name||'Restaurant';$('shopTag').textContent=sh.tagline||sh.address||'';
+  $('badges').innerHTML=`<span class="badge ${store.open?'open':'closed'}">${store.open?'● Open for orders':'● Closed right now'}</span>`
+   +(store.prep_min?`<span class="badge">⏱ ~${store.prep_min} min</span>`:'')+(store.min_order?`<span class="badge">Min ${inr(store.min_order)}</span>`:'')
+   +(store.delivery_fee?`<span class="badge">Delivery ${inr(store.delivery_fee)}${store.free_above?` · free above ${inr(store.free_above)}`:''}</span>`:'<span class="badge">Free delivery</span>')
+   +(sh.phone?`<a class="badge" style="color:#fff;text-decoration:none" href="tel:${esc(sh.phone)}">📞 ${esc(sh.phone)}</a>`:'');
+  // drop cart lines that are no longer on the menu
+  cart=cart.filter(l=>store.menu.some(m=>m.code===l.code&&m.available!==false));saveCart();
+  renderMenu();updateBar();
+  const act=ls.get('ras_orders',[]);if(act.length)checkActiveOrders();
+}
+function cats(){return ['All',...new Set(store.menu.filter(m=>m.available!==false).map(m=>m.category||'Menu'))]}
+function renderMenu(){
+  $('chips').innerHTML=cats().map(c=>`<button class="chip ${c===cat?'on':''}" onclick="setCat(this.dataset.c)" data-c="${esc(c)}">${esc(c)}</button>`).join('');
+  const q=$('q').value.trim().toLowerCase();
+  const sourceMenu=Array.isArray(store.menu)?store.menu:[];
+  const list=sourceMenu.filter(m=>m&&m.available!==false&&m.type!=='As per order'&&(m.full!==null&&m.full!==undefined&&m.full!==''||m.half!==null&&m.half!==undefined&&m.half!=='')&&(cat==='All'||(m.category||'Menu')===cat)&&(!q||String(m.name||'').concat(' ',String(m.category||'')).toLowerCase().includes(q)));
+  if(!list.length){$('menu').innerHTML=sourceMenu.length?'<div class="empty">No priced, available items match this filter. Check item prices and Online Orders → hidden items, then publish again.</div>':'<div class="empty">The online menu is empty. Open the restaurant system, check that menu items have prices and are not hidden, then select Online Orders → Save &amp; Publish Menu.</div>';return}
+  const by={};list.forEach(m=>(by[m.category||'Menu']=by[m.category||'Menu']||[]).push(m));
+  $('menu').innerHTML=Object.entries(by).map(([c,items])=>`<h2 class="cat">${esc(c)}</h2><div class="grid">${items.map(itemHtml).join('')}</div>`).join('');
+}
+function qtyOf(code,v){const l=cart.find(x=>x.code===code&&x.variant===v);return l?l.qty:0}
+function ctrl(m,v,price,label){
+  const n=qtyOf(m.code,v);
+  return n?`<div class="step"><button onclick="chg('${esc(m.code)}','${v}',-1)">−</button><span>${n}</span><button onclick="chg('${esc(m.code)}','${v}',1)">+</button></div>`
+        :`<button class="add" onclick="chg('${esc(m.code)}','${v}',1)">ADD</button>`;
+}
+function itemHtml(m){
+  const both=m.type==='Half & Full'&&m.half!=null&&m.full!=null;
+  const rows=both?[['Half',m.half],['Full',m.full]]:[[m.full!=null?'Full':'Half',m.full!=null?m.full:m.half]];
+  const image=String(m.image||m.image_url||m.imageUrl||'').trim();
+  return `<div class="item">${image?`<img loading="lazy" referrerpolicy="no-referrer" src="${esc(image)}" alt="${esc(m.name||'Menu item')}" onerror="this.style.display='none'">`:''}<div class="b"><h3>${esc(m.name)}</h3>${m.unit?`<small>${esc(m.unit)}</small>`:''}
+   <div class="opts">${rows.map(([v,p])=>`<div class="opt">${both?v+' ':''}<b>${inr(p)}</b>${ctrl(m,v,p)}</div>`).join('')}</div></div></div>`;
+}
+function setCat(c){cat=c;renderMenu()}
+$('q').addEventListener('input',renderMenu);
+function priceOf(l){const m=store.menu.find(x=>x.code===l.code);return m?(l.variant==='Half'?m.half:m.full):0}
+function chg(code,v,d){
+  if(!store.open&&d>0){alert('Sorry, we are not taking online orders right now.');return}
+  let l=cart.find(x=>x.code===code&&x.variant===v);
+  if(!l){if(d<0)return;l={code,variant:v,qty:0};cart.push(l)}
+  l.qty=Math.max(0,Math.min(20,l.qty+d));cart=cart.filter(x=>x.qty>0);saveCart();renderMenu();updateBar();if($('sheetCart').classList.contains('on'))openCart();
+}
+function saveCart(){ls.set('ras_cart',cart)}
+const subtotal=()=>cart.reduce((s,l)=>s+priceOf(l)*l.qty,0);
+function updateBar(){const n=cart.reduce((s,l)=>s+l.qty,0);$('cartbar').style.display=n?'block':'none';$('cbCount').textContent=n+' item'+(n>1?'s':'');$('cbTotal').textContent=inr(subtotal())}
+function closeSheets(){document.querySelectorAll('.sheet').forEach(s=>s.classList.remove('on'));clearInterval(pollTimer)}
+function nameOf(l){const m=store.menu.find(x=>x.code===l.code);return (m?m.name:l.code)+(m&&m.type==='Half & Full'?` (${l.variant})`:'')}
+
+// ---------- cart & checkout ----------
+function openCart(){
+  const f=ls.get('ras_form',{type:'Delivery',pay:'COD'});
+  const sub=subtotal(),minOk=sub>=(store.min_order||0);
+  $('cartPanel').innerHTML=`<h3>Your cart <button class="x" onclick="closeSheets()">✕</button></h3>
+  <div class="box">${cart.map(l=>`<div class="row"><span style="flex:1">${esc(nameOf(l))}<br><small style="color:var(--mute)">${inr(priceOf(l))} each</small></span>
+   <div class="step"><button onclick="chg('${esc(l.code)}','${l.variant}',-1)">−</button><span>${l.qty}</span><button onclick="chg('${esc(l.code)}','${l.variant}',1)">+</button></div><b style="min-width:64px;text-align:right">${inr(priceOf(l)*l.qty)}</b></div>`).join('')||'<div class="empty">Cart is empty</div>'}</div>
+  <div class="box"><div class="seg"><label><input type="radio" name="otype" value="Delivery" ${f.type==='Delivery'?'checked':''} onchange="calc()"><span>🛵 Delivery</span></label><label><input type="radio" name="otype" value="Pickup" ${f.type==='Pickup'?'checked':''} onchange="calc()"><span>🛍 Pickup</span></label></div>
+   <label class="f">Your name</label><input class="t" id="fName" value="${esc(f.name||'')}" autocomplete="name">
+   <label class="f">Mobile number</label><input class="t" id="fPhone" value="${esc(f.phone||'')}" inputmode="numeric" autocomplete="tel" maxlength="14">
+   <div id="addrWrap"><label class="f">Delivery address (house no, street, landmark)</label><textarea class="t" id="fAddr" rows="2">${esc(f.addr||'')}</textarea></div>
+   <label class="f">Cooking instructions / note (optional)</label><input class="t" id="fNotes" maxlength="300" placeholder="e.g. less spicy"></div>
+  <div class="box"><b>Payment</b><div style="height:8px"></div>
+   <label class="pay"><input type="radio" name="pay" value="COD" ${f.pay!=='UPI'?'checked':''}><div><b>Cash on Delivery</b><small>Pay cash / UPI to the delivery person or at pickup</small></div></label>
+   <label class="pay"><input type="radio" name="pay" value="UPI" ${f.pay==='UPI'?'checked':''}><div><b>Pay by UPI</b><small>GPay, PhonePe, Paytm… — you'll pay right after placing the order</small></div></label></div>
+  <div class="box" id="bill"></div><div id="cErr"></div>
+  <button class="primary" id="placeBtn" onclick="place()" ${minOk&&cart.length?'':'disabled'}>Place order</button>`;
+  $('sheetCart').classList.add('on');calc();
+}
+function calc(){
+  const type=document.querySelector('input[name=otype]:checked')?.value||'Delivery';
+  const sub=subtotal();let fee=0;if(type==='Delivery'){fee=store.delivery_fee||0;if(store.free_above&&sub>=store.free_above)fee=0}
+  $('addrWrap').style.display=type==='Delivery'?'block':'none';const pb=$('placeBtn');if(pb)pb.disabled=!(cart.length&&sub>=(store.min_order||0));
+  $('bill').innerHTML=`<div class="row"><span>Item total</span><span>${inr(sub)}</span></div>${type==='Delivery'?`<div class="row"><span>Delivery fee</span><span>${fee?inr(fee):'FREE'}</span></div>`:''}<div class="row t"><span>To pay</span><span>${inr(sub+fee)}</span></div>`
+   +(sub<(store.min_order||0)?`<div class="err">Minimum order is ${inr(store.min_order)}. Add ${inr(store.min_order-sub)} more.</div>`:'');
+}
+async function place(){
+  const type=document.querySelector('input[name=otype]:checked').value,pay=document.querySelector('input[name=pay]:checked').value;
+  const name=$('fName').value.trim(),phone=$('fPhone').value.trim(),addr=$('fAddr').value.trim();
+  ls.set('ras_form',{type,pay,name,phone,addr});
+  const btn=$('placeBtn');btn.disabled=true;btn.textContent='Placing order…';$('cErr').innerHTML='';
+  try{
+    const r=await rpc('online_place_order',{p:{name,phone,order_type:type,address:addr,notes:$('fNotes').value,payment_method:pay,items:cart.map(l=>({code:l.code,variant:l.variant,qty:l.qty}))}});
+    const list=ls.get('ras_orders',[]);list.unshift({id:r.id,token:r.token});ls.set('ras_orders',list.slice(0,20));
+    cart=[];saveCart();renderMenu();updateBar();closeSheets();showOrder(r.id,r.token,true);
+  }catch(e){$('cErr').innerHTML='<div class="err">'+esc(e.message)+'</div>';btn.disabled=false;btn.textContent='Place order'}
+}
+
+// ---------- order tracking ----------
+const FLOW={Delivery:['New','Accepted','Preparing','Out for delivery','Delivered'],Pickup:['New','Accepted','Preparing','Ready','Picked up']};
+const LABEL={New:'Placed',Accepted:'Accepted',Preparing:'Cooking','Out for delivery':'On the way',Ready:'Ready',Delivered:'Delivered','Picked up':'Picked up'};
+function upiUri(o){const u=store.upi||{};const p=new URLSearchParams({pa:u.id||'',pn:u.name||(store.shop||{}).name||'',am:Number(o.total).toFixed(2),cu:'INR',tn:'Order '+o.id,tr:o.id});return 'upi://pay?'+p.toString()}
+function qrSvg(t){try{const q=qrcode(0,'M');q.addData(t);q.make();return q.createSvgTag({cellSize:4,margin:2,scalable:true})}catch(e){return ''}}
+async function showOrder(id,token,fresh){
+  $('sheetOrder').classList.add('on');
+  const draw=async()=>{
+    let o;try{o=await rpc('online_order_status',{p_id:id,p_token:token})}catch(e){$('orderPanel').innerHTML='<h3>Order <button class="x" onclick="closeSheets()">✕</button></h3><div class="err">'+esc(e.message)+'</div>';return}
+    const dead=['Rejected','Cancelled'].includes(o.status),flow=FLOW[o.order_type]||FLOW.Delivery,idx=flow.indexOf(o.status);
+    const needPay=o.payment_method==='UPI'&&['Pending'].includes(o.payment_status)&&!dead,verifying=o.payment_method==='UPI'&&o.payment_status==='Verifying';
+    const ps=o.payment_status==='Paid'?'<span class="pill g">Paid</span>':o.payment_method==='COD'?'<span class="pill y">Cash on delivery</span>':verifying?'<span class="pill y">Payment being verified</span>':'<span class="pill r">Payment pending</span>';
+    $('orderPanel').innerHTML=`<h3>Order ${esc(o.id)} <button class="x" onclick="closeSheets()">✕</button></h3>
+    ${fresh&&o.status==='New'?'<div class="ok">✅ Order placed! Waiting for the restaurant to accept.</div>':''}
+    ${dead?`<div class="err"><b>Order ${esc(o.status.toLowerCase())}.</b> ${esc(o.reject_reason||'')}</div>`:`<div class="box"><div class="track">${flow.map((s,i)=>`<div class="tp ${i<idx?'done':i===idx?'done now':''}"><i>${i<=idx?'✓':''}</i>${LABEL[s]}</div>`).join('')}</div>${o.eta_min&&idx>=1&&idx<flow.length-1?`<p style="text-align:center;margin:8px 0 0">Ready in about <b>${o.eta_min} min</b></p>`:''}</div>`}
+    ${needPay?`<div class="box"><b>Pay ${inr(o.total)} by UPI</b>
+      <a class="primary" style="display:block;text-align:center;text-decoration:none;margin-top:10px" href="${esc(upiUri(o))}">Open UPI app & pay</a>
+      <div class="qr">${qrSvg(upiUri(o))}</div><p style="text-align:center;margin:0;color:var(--mute);font-size:13px">Or scan with any UPI app · UPI ID: <b>${esc((store.upi||{}).id||'')}</b></p>
+      <label class="f">After paying, enter the UPI reference / UTR number</label><input class="t" id="utr" placeholder="12-digit reference number" maxlength="40"><div id="uErr"></div>
+      <button class="ghost" onclick="sendUtr('${esc(id)}','${esc(token)}')">I have paid</button></div>`:''}
+    ${verifying?'<div class="ok">Thanks! We got your payment reference and will confirm it shortly. UTR: <b>'+esc(o.upi_ref||'')+'</b></div>':''}
+    <div class="box"><div class="row"><span>Payment</span><span>${esc(o.payment_method==='COD'?'Cash on Delivery':'UPI')} ${ps}</span></div>
+     <div class="row"><span>${o.order_type==='Delivery'?'Deliver to':'Pickup'}</span><span style="text-align:right;max-width:65%">${esc(o.order_type==='Delivery'?o.address:'At the restaurant')}</span></div></div>
+    <div class="box">${o.items.map(l=>`<div class="row"><span>${l.qty} × ${esc(l.name)}${l.variant==='Half'?' (Half)':''}</span><span>${inr(l.qty*l.price)}</span></div>`).join('')}
+     ${o.delivery_fee>0?`<div class="row"><span>Delivery</span><span>${inr(o.delivery_fee)}</span></div>`:''}<div class="row t"><span>Total</span><span>${inr(o.total)}</span></div></div>
+    ${o.status==='New'&&o.payment_status!=='Paid'?`<button class="ghost" style="border-color:var(--bad);color:var(--bad)" onclick="cancelOrder('${esc(id)}','${esc(token)}')">Cancel order</button>`:''}
+    ${(store.shop||{}).phone?`<a class="ghost" href="tel:${esc(store.shop.phone)}">📞 Call restaurant</a>`:''}`;
+    if(['Delivered','Picked up','Rejected','Cancelled'].includes(o.status))clearInterval(pollTimer);
+  };
+  await draw();clearInterval(pollTimer);pollTimer=setInterval(()=>{if($('sheetOrder').classList.contains('on')&&!document.activeElement?.matches?.('#utr'))draw()},8000);
+}
+async function sendUtr(id,token){
+  try{await rpc('online_submit_upi_ref',{p_id:id,p_token:token,p_ref:$('utr').value});showOrder(id,token)}
+  catch(e){$('uErr').innerHTML='<div class="err">'+esc(e.message)+'</div>'}
+}
+async function cancelOrder(id,token){
+  if(!confirm('Cancel this order?'))return;
+  try{await rpc('online_cancel_order',{p_id:id,p_token:token});showOrder(id,token)}catch(e){alert(e.message)}
+}
+async function openOrders(){
+  const list=ls.get('ras_orders',[]);$('sheetOrder').classList.add('on');
+  if(!list.length){$('orderPanel').innerHTML='<h3>My orders <button class="x" onclick="closeSheets()">✕</button></h3><div class="empty">You have not placed any orders on this device yet.</div>';return}
+  $('orderPanel').innerHTML='<h3>My orders <button class="x" onclick="closeSheets()">✕</button></h3><div id="ol">Loading…</div>';
+  const rows=[];for(const o of list.slice(0,10)){try{rows.push({...await rpc('online_order_status',{p_id:o.id,p_token:o.token}),token:o.token})}catch(e){}}
+  $('ol').innerHTML=rows.map(o=>`<div class="box" onclick="showOrder('${esc(o.id)}','${esc(o.token)}')" style="cursor:pointer"><div class="row"><b>${esc(o.id)}</b><span>${inr(o.total)}</span></div><div class="row"><span style="color:var(--mute)">${new Date(o.created_at).toLocaleString('en-IN')}</span><span class="pill ${['Delivered','Picked up'].includes(o.status)?'g':['Rejected','Cancelled'].includes(o.status)?'r':'y'}">${esc(o.status)}</span></div></div>`).join('')||'<div class="empty">No orders found.</div>';
+}
+async function checkActiveOrders(){
+  const list=ls.get('ras_orders',[]);if(!list.length)return;
+  try{const o=await rpc('online_order_status',{p_id:list[0].id,p_token:list[0].token});
+   if(!['Delivered','Picked up','Rejected','Cancelled'].includes(o.status)){const b=document.createElement('div');b.className='wrap';b.innerHTML=`<div class="ok" style="cursor:pointer" onclick="showOrder('${esc(o.id)}','${esc(list[0].token)}')">🛵 Your order ${esc(o.id)} is <b>${esc(o.status)}</b> — tap to track</div>`;document.querySelector('.hero').after(b)}}catch(e){}
+}
+init();
+</script></body></html>
